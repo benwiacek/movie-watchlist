@@ -20,12 +20,17 @@ header {
 
 h1, h2 {
     padding: 20px;
-    color: white;
+
     text-shadow: 0 0 10px orange;
 }
 
 h1 {
     font-size: 42px;
+}
+
+h1 a, h2 a {
+    text-decoration: none;
+    color: white;
 }
 
 h2 {
@@ -72,6 +77,7 @@ button {
     font-size: 16px;
     font-weight: bold;
     background-color: lightgoldenrodyellow;
+    cursor: pointer;
 
 }
 
@@ -79,7 +85,7 @@ main {
     margin: 0 auto;
     width: 100%;
     max-width: 800px;
-    padding: 20px 0;
+    padding: 30px 0;
 }
 
 .movie-list {
@@ -88,7 +94,7 @@ main {
     align-items: center;
     justify-content: center;
     min-height: 65dvh;
-    gap: 10px;
+    margin: 0 20px;
 }
 
 .icon-film {
@@ -96,8 +102,79 @@ main {
     margin: 0 auto;
 }
 
-p {
+.placeholder-text, .error-text {
     display: block;
     color: lightgrey;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.movie {
+    display: flex;
+    padding: 20px 0 ;
+    border-bottom: 1px solid grey;
+}
+
+.poster {
+    width: 100px;
+    height: 149px;
+    margin: 0 20px 0 0;    
+}
+
+.movie-headline {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.movie-title {
+    margin: 0;
+    padding-right: 10px;
+    font-size: 20px;
+}
+
+.star-icon, .plus-icon {
+    width: 15px;
+    height: 15px;
+    padding-right: 5px;
+}
+
+.movie .rating {
+    cursor: pointer;
+}
+
+.movie-details {
+    /* display: flex; */
+}
+
+.movie-details p {
+    margin: 1px;
+}
+
+.runtime, .genre {
+    font-size: 14px;
+}
+
+.genre {
+    font-style: italic;
+}
+
+.add-movie {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.plus-icon {
+    /* margin: 10px 0; */
+}
+
+.movie-plot {
+    margin: 0;
+}
+
+#my-movie-list {
+    text-align: center;
     font-weight: bold;
 }

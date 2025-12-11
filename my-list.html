@@ -9,14 +9,17 @@
 
     <body>
 		<header>
-			<h1>My Watchlist</h1>
-			<h2>Search for movies</h2>
+			<h1><a href="./my-list.html">My Watchlist</a></h1>
+			<h2><a href="./index.html">Search for movies</a></h2>
 		</header>
 
 		<main>
-			<div class="movie-list">
-				<p>Your watchlist is looking a little empty...</p>
-				<a href="./index"><img src="/images/plus-icon.png">Let's add some movies!</a>
+			<div class="movie-list" id="my-movie-list">
+				<p class="placeholder-text">Your watchlist is looking a little empty...</p>
+				<div class="add-movie" id="add-movie">
+					<img class="plus-icon" src="/images/plus-icon.png">
+					<span>Let's add some movies!</span>
+				</div>
 			</div>
 		</main>
 
