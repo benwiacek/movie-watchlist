@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    position: relative;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+}
+
+header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url("/images/movie-posters.jpg");
+    background-size: cover;
+    width: 100%;
+    min-height: 35dvh;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    justify-content: space-around;
+
+}
+
+h1, h2 {
+    padding: 20px;
+    color: white;
+    text-shadow: 0 0 10px orange;
+}
+
+h1 {
+    font-size: 42px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+.search-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 80%;
+    max-width: 650px;
+}
+
+.search-icon {
+    width: 15px;
+    position: absolute;
+    left: 15px;
+    right: 0px;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.search-input {
+    padding: 20px 5px 20px 40px;
+    width: 70%;
+    border-radius: 10px 0 0 10px;
+    border: 1px solid grey;
+    font-size: 16px;
+}
+
+button {
+    padding: 20px 40px 20px 20px;
+    width: 30%;
+    border-radius: 0 10px 10px 0;
+    border: 1px solid grey;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: lightgoldenrodyellow;
+
+}
+
+main {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px 0;
+}
+
+.movie-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 65dvh;
+    gap: 10px;
+}
+
+.icon-film {
+    width: 70px;
+    margin: 0 auto;
+}
+
+p {
+    display: block;
+    color: lightgrey;
+    font-weight: bold;
+}
