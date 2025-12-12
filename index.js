@@ -2,6 +2,7 @@ const input = document.getElementById("input")
 const search = document.getElementById("search-form")
 const movieList = document.getElementById("movie-list")
 const myMovieList = document.getElementById("my-movie-list")
+const clearBtn = document.getElementById("clear-btn")
 
 let htmlString = ""
 
@@ -15,20 +16,31 @@ if (search) {
     search.addEventListener("submit", getMovieList)
 }
 
-if (myMovieList) {
-    if (myMoviesArr.length === 0) {
-        myMoviesHTML = 
-        `<div class="placeholder-div">
-            <p class="placeholder-text">Your watchlist is looking a little empty...</p>
-            <div class="add-movie" id="add-movie">
-                <img class="plus-icon" src="/images/plus-icon.png">
-                <a class="empty-list" href="./index.html">Let's add some movies!</a>
-            </div>
-        </div>`
-    } else {
-        myMoviesHTML = renderList(myMoviesArr)
+if(myMovieList) {
+    function renderMyMovieList() {
+        if (myMoviesArr.length === 0) {
+            myMoviesHTML = 
+            `<div class="placeholder-div">
+                <p class="placeholder-text">Your watchlist is looking a little empty...</p>
+                <div class="add-movie" id="add-movie">
+                    <img class="plus-icon" src="/images/plus-icon.png">
+                    <a class="empty-list" href="./index.html">Let's add some movies!</a>
+                </div>
+            </div>`
+        } else {
+            myMoviesHTML = `<p class="empty-btn" id="clear-btn">Empty my list</p>` + renderList(myMoviesArr)
+        }
+        myMovieList.innerHTML = myMoviesHTML
     }
-    myMovieList.innerHTML = myMoviesHTML
+    renderMyMovieList()
+
+    myMovieList.addEventListener("click", (e) => {
+        if (e.target.closest("#clear-btn")) {
+            localStorage.clear()
+            myMoviesArr = []
+            renderMyMovieList()
+        }
+    })
 }
 
 async function getMovieList(e) {
@@ -47,7 +59,10 @@ async function getMovieList(e) {
         }
         listResultsHTML = renderList(moviesResultsArr)
     } else {
-        listResultsHTML = `<div class="error-text">Unable to find what you’re looking for. Please try another search.</div>`
+        listResultsHTML = `<div class="placeholder-div error-div">
+                                <p class="error-text">Unable to find what you’re looking for.
+                                Please try another search.</p>
+                            </div>`
     }
 
     movieList.innerHTML = listResultsHTML
@@ -87,7 +102,7 @@ function renderList(arr) {
 }
 
 if (movieList) {
-    movieList.addEventListener("click", function(e) {
+    movieList.addEventListener("click", (e) => {
         const addMovieBtn = e.target.closest(".add-movie")
         if(addMovieBtn && addMovieBtn.dataset.id) {
             addMyMovie(addMovieBtn.dataset.id)
@@ -95,7 +110,7 @@ if (movieList) {
     })
 }
 
-async function addMyMovie(filmId) {
+function addMyMovie(filmId) {
     const movieChoice = myMoviesArr.find(movie => movie.imdbID === filmId)
     if (!movieChoice) {
         const movieToAdd = moviesResultsArr.find(movie => movie.imdbID === filmId)
