@@ -18,10 +18,12 @@ if (search) {
 if (myMovieList) {
     if (myMoviesArr.length === 0) {
         myMoviesHTML = 
-        `<p class="placeholder-text">Your watchlist is looking a little empty...</p>
-        <div class="add-movie" id="add-movie">
-            <img class="plus-icon" src="/images/plus-icon.png">
-            <a class="empty-list" href="./index.html">Let's add some movies!</a>
+        `<div class="placeholder-div">
+            <p class="placeholder-text">Your watchlist is looking a little empty...</p>
+            <div class="add-movie" id="add-movie">
+                <img class="plus-icon" src="/images/plus-icon.png">
+                <a class="empty-list" href="./index.html">Let's add some movies!</a>
+            </div>
         </div>`
     } else {
         myMoviesHTML = renderList(myMoviesArr)
