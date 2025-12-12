@@ -40,13 +40,19 @@ if(myMovieList) {
             myMoviesArr = []
             renderMyMovieList()
         }
+
+        const removeMovieBtn = e.target.closest(".remove-movie")
+        if (removeMovieBtn && removeMovieBtn.dataset.id) {
+            removeMovie(removeMovieBtn.dataset.id)
+            renderMyMovieList()
+        }
+
     })
 }
 
 async function getMovieList(e) {
     e.preventDefault();
     moviesResultsArr = []
-    htmlString = ""
     listResultsHTML = ""
     const res = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&s=${input.value}&type=movie&r=json`)
     const data = await res.json()
@@ -64,11 +70,11 @@ async function getMovieList(e) {
                                 Please try another search.</p>
                             </div>`
     }
-
     movieList.innerHTML = listResultsHTML
 }
 
 function renderList(arr) {
+    htmlString = ""
     for(const movie of arr) {
         htmlString += 
         `<div class="movie">
@@ -116,5 +122,17 @@ function addMyMovie(filmId) {
         const movieToAdd = moviesResultsArr.find(movie => movie.imdbID === filmId)
         myMoviesArr.push(movieToAdd)
         localStorage.setItem("My movie list", JSON.stringify(myMoviesArr))
+
     } 
+}
+
+function removeMovie(filmId) {
+    const movieChoice = myMoviesArr.find(movie => movie.imdbID === filmId)
+    if (movieChoice) {
+        const movIndexToRemove = myMoviesArr.findIndex(movie => movie.imdbID === filmId)
+        if (movIndexToRemove > -1) {
+            myMoviesArr.splice(movIndexToRemove, 1)
+            localStorage.setItem("My movie list", JSON.stringify(myMoviesArr))
+        }
+    }
 }
