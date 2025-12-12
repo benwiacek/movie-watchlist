@@ -144,9 +144,9 @@ main {
     cursor: pointer;
 }
 
-.movie-details {
-    /* display: flex; */
-}
+/* .movie-details {
+    display: flex; < == for LARGE screens
+} */
 
 .movie-details p {
     margin: 1px;
@@ -164,10 +164,7 @@ main {
     margin: 10px 0;
     display: flex;
     align-items: center;
-}
-
-.plus-icon {
-    /* margin: 10px 0; */
+    cursor: pointer;
 }
 
 .movie-plot {
