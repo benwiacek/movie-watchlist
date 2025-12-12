@@ -130,8 +130,13 @@ main {
 
 .movie-title {
     margin: 0;
-    padding-right: 10px;
+    padding-right: 5px;
     font-size: 20px;
+}
+
+.movie-year {
+    font-style: italic;
+    padding-right: 10px;
 }
 
 .star-icon, .plus-icon {
@@ -171,7 +176,14 @@ main {
     margin: 0;
 }
 
-#my-movie-list {
+#my-movie-list .placeholder-text,
+#my-movie-list .add-movie {
     text-align: center;
     font-weight: bold;
+}
+
+#my-movie-list a {
+    text-decoration: none;
+    color: black;
+    font-size: px;
 }

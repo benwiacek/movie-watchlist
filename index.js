@@ -3,8 +3,10 @@ const search = document.getElementById("search-form")
 const movieList = document.getElementById("movie-list")
 const myMovieList = document.getElementById("my-movie-list")
 
+let htmlString = ""
+
 let moviesResultsArr = []
-let listMoviesResults = ""
+let listResultsHTML = ""
 
 let myMoviesArr = JSON.parse(localStorage.getItem("My movie list")) || []
 let myMoviesHTML = ""
@@ -16,7 +18,7 @@ if (search) {
 async function getMovieList(e) {
     e.preventDefault();
     moviesResultsArr = []
-    listMoviesResults = ""
+    listResultsHTML = ""
     const res = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&s=${input.value}&type=movie&r=json`)
     const data = await res.json()
     console.log(data)
@@ -26,33 +28,38 @@ async function getMovieList(e) {
             const movieData = await movieRes.json()
             moviesResultsArr.push(movieData)
         }
-
-        for(const movie of moviesResultsArr) {
-            listMoviesResults += 
-            `<div class="movie">
-                <img src="${movie.Poster} alt="${movie.Title} poster" class="poster">
-                <div class="movie-block">
-                    <div class="movie-headline">
-                        <h3 class="movie-title">${movie.Title}</h3>
-                        <a href="https://www.imdb.com/title/${movie.imdbID}" class="rating"><img class="star-icon" src="/images/icon-star.png">${movie.imdbRating}</a>
-                    </div>
-                    <div class="movie-details">
-                        <p class="runtime">${movie.Runtime}</p> 
-                        <p class="genre">${movie.Genre}</p>
-                        <div class="add-movie" data-id="${movie.imdbID}">
-                            <img class="plus-icon" src="/images/plus-icon.png">
-                            <span>Watchlist</span>
-                        </div>
-                    </div>
-                    <p class="movie-plot">${movie.Plot}</p>
-                </div>
-            </div>`
-        }
+        listResultsHTML = renderList(moviesResultsArr)
     } else {
-        listMoviesResults = `<div class="error-text">Unable to find what you’re looking for. Please try another search.</div>`
+        listResultsHTML = `<div class="error-text">Unable to find what you’re looking for. Please try another search.</div>`
     }
 
-    movieList.innerHTML = listMoviesResults
+    movieList.innerHTML = listResultsHTML
+}
+
+function renderList(arr) {
+    for(const movie of arr) {
+        htmlString += 
+        `<div class="movie">
+            <img src="${movie.Poster} alt="${movie.Title} poster" class="poster">
+            <div class="movie-block">
+                <div class="movie-headline">
+                    <h3 class="movie-title">${movie.Title}</h3>
+                    <span class="movie-year">(${movie.Year})</span>
+                    <a href="https://www.imdb.com/title/${movie.imdbID}" class="rating"><img class="star-icon" src="/images/icon-star.png">${movie.imdbRating}</a>
+                </div>
+                <div class="movie-details">
+                    <p class="runtime">${movie.Runtime}</p> 
+                    <p class="genre">${movie.Genre}</p>
+                    <div class="add-movie" data-id="${movie.imdbID}">
+                        <img class="plus-icon" src="/images/plus-icon.png">
+                        <span>Watchlist</span>
+                    </div>
+                </div>
+                <p class="movie-plot">${movie.Plot}</p>
+            </div>
+        </div>`
+    }
+    return htmlString
 }
 
 if (movieList) {
@@ -65,40 +72,24 @@ if (movieList) {
 }
 
 async function addMyMovie(filmId) {
-    const res = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&i=${filmId}&r=json`)
-    const movie = await res.json()
-    if (!myMoviesArr.includes(movie)) {
-        myMoviesArr.push(movie)
-    }
-    console.log("movie-added")
-    console.log(myMoviesArr)
-    localStorage.setItem("My movie list", JSON.stringify(myMoviesArr))
+    const movieChoice = myMoviesArr.find(movie => movie.imdbID === filmId)
+    if (!movieChoice) {
+        const movieToAdd = moviesResultsArr.find(movie => movie.imdbID === filmId)
+        myMoviesArr.push(movieToAdd)
+        localStorage.setItem("My movie list", JSON.stringify(myMoviesArr))
+    } 
 }
 
-// function renderMyList() {
-//     for(const movie of myMoviesArr) {
-//         myMoviesHTML =
-//         `<div class="movie">
-//             <img src="${movie.Poster} alt="${movie.Title} poster" class="poster">
-//             <div class="movie-block">
-//                 <div class="movie-headline">
-//                     <h3 class="movie-title">${movie.Title}</h3>
-//                     <a href="https://www.imdb.com/title/${movie.imdbID}" class="rating"><img class="star-icon" src="/images/icon-star.png">${movie.imdbRating}</a>
-//                 </div>
-//                 <div class="movie-details">
-//                     <p class="runtime">${movie.Runtime}</p> 
-//                     <p class="genre">${movie.Genre}</p>
-//                     <div class="add-movie" data-id="${movie.imdbID}">
-//                         <img class="plus-icon" src="/images/plus-icon.png">
-//                         <span>Watchlist</span>
-//                     </div>
-//                 </div>
-//                 <p class="movie-plot">${movie.Plot}</p>
-//             </div>
-//         </div>`
-//     }
-//     myMovieList.innerHTML = myMoviesHTML
-// }
-
-// renderMyList()
-// console.log(myMoviesArr)
+if (myMovieList) {
+    if (myMoviesArr.length === 0) {
+        myMoviesHTML = 
+        `<p class="placeholder-text">Your watchlist is looking a little empty...</p>
+        <div class="add-movie" id="add-movie">
+            <img class="plus-icon" src="/images/plus-icon.png">
+            <a href="./index.html">Let's add some movies!</a>
+        </div>`
+    } else {
+        myMoviesHTML = renderList(myMoviesArr)
+    }
+    myMovieList.innerHTML = myMoviesHTML
+}
