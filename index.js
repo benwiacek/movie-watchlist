@@ -15,9 +15,24 @@ if (search) {
     search.addEventListener("submit", getMovieList)
 }
 
+if (myMovieList) {
+    if (myMoviesArr.length === 0) {
+        myMoviesHTML = 
+        `<p class="placeholder-text">Your watchlist is looking a little empty...</p>
+        <div class="add-movie" id="add-movie">
+            <img class="plus-icon" src="/images/plus-icon.png">
+            <a class="empty-list" href="./index.html">Let's add some movies!</a>
+        </div>`
+    } else {
+        myMoviesHTML = renderList(myMoviesArr)
+    }
+    myMovieList.innerHTML = myMoviesHTML
+}
+
 async function getMovieList(e) {
     e.preventDefault();
     moviesResultsArr = []
+    htmlString = ""
     listResultsHTML = ""
     const res = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&s=${input.value}&type=movie&r=json`)
     const data = await res.json()
@@ -50,10 +65,17 @@ function renderList(arr) {
                 <div class="movie-details">
                     <p class="runtime">${movie.Runtime}</p> 
                     <p class="genre">${movie.Genre}</p>
-                    <div class="add-movie" data-id="${movie.imdbID}">
+                    ${myMoviesArr.find(mov => mov.imdbID === movie.imdbID)?
+                        `<div class="remove-movie" data-id="${movie.imdbID}">
+                        <img class="minus-icon" src="/images/minus-icon.png">
+                        <span>remove</span>
+                        </div>`
+                        :
+                        `<div class="add-movie" data-id="${movie.imdbID}">
                         <img class="plus-icon" src="/images/plus-icon.png">
-                        <span>Watchlist</span>
-                    </div>
+                        <span>Add to watchlist</span>
+                    </div>`
+                    }   
                 </div>
                 <p class="movie-plot">${movie.Plot}</p>
             </div>
@@ -78,18 +100,4 @@ async function addMyMovie(filmId) {
         myMoviesArr.push(movieToAdd)
         localStorage.setItem("My movie list", JSON.stringify(myMoviesArr))
     } 
-}
-
-if (myMovieList) {
-    if (myMoviesArr.length === 0) {
-        myMoviesHTML = 
-        `<p class="placeholder-text">Your watchlist is looking a little empty...</p>
-        <div class="add-movie" id="add-movie">
-            <img class="plus-icon" src="/images/plus-icon.png">
-            <a href="./index.html">Let's add some movies!</a>
-        </div>`
-    } else {
-        myMoviesHTML = renderList(myMoviesArr)
-    }
-    myMovieList.innerHTML = myMoviesHTML
 }
