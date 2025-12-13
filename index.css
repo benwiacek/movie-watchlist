@@ -119,10 +119,11 @@ main {
     display: flex;
     padding: 20px 0 ;
     border-bottom: 1px solid grey;
+    width: 100%;
 }
 
 .poster {
-    width: 100px;
+    min-width: 100px;
     height: 149px;
     margin: 0 20px 0 0;    
 }

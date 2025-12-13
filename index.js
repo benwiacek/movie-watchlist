@@ -16,47 +16,12 @@ if (search) {
     search.addEventListener("submit", getMovieList)
 }
 
-if(myMovieList) {
-    function renderMyMovieList() {
-        if (myMoviesArr.length === 0) {
-            myMoviesHTML = 
-            `<div class="placeholder-div">
-                <p class="placeholder-text">Your watchlist is looking a little empty...</p>
-                <div class="add-movie" id="add-movie">
-                    <img class="plus-icon" src="/images/plus-icon.png">
-                    <a class="empty-list" href="./index.html">Let's add some movies!</a>
-                </div>
-            </div>`
-        } else {
-            myMoviesHTML = `<p class="empty-btn" id="clear-btn">Empty my list</p>` + renderList(myMoviesArr)
-        }
-        myMovieList.innerHTML = myMoviesHTML
-    }
-    renderMyMovieList()
-
-    myMovieList.addEventListener("click", (e) => {
-        if (e.target.closest("#clear-btn")) {
-            localStorage.clear()
-            myMoviesArr = []
-            renderMyMovieList()
-        }
-
-        const removeMovieBtn = e.target.closest(".remove-movie")
-        if (removeMovieBtn && removeMovieBtn.dataset.id) {
-            removeMovie(removeMovieBtn.dataset.id)
-            renderMyMovieList()
-        }
-
-    })
-}
-
 async function getMovieList(e) {
     e.preventDefault();
     moviesResultsArr = []
     listResultsHTML = ""
     const res = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&s=${input.value}&type=movie&r=json`)
     const data = await res.json()
-    console.log(data)
     if(data.Response === "True") {
         for(const result of data.Search) {
             const movieRes = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&i=${result.imdbID}&r=json`)
@@ -88,16 +53,10 @@ function renderList(arr) {
                 <div class="movie-details">
                     <p class="runtime">${movie.Runtime}</p> 
                     <p class="genre">${movie.Genre}</p>
-                    ${myMoviesArr.find(mov => mov.imdbID === movie.imdbID)?
-                        `<div class="remove-movie" data-id="${movie.imdbID}">
-                        <img class="minus-icon" src="/images/minus-icon.png">
-                        <span>remove</span>
-                        </div>`
+                    <div class${myMoviesArr.find(mov => mov.imdbID === movie.imdbID)?
+                        getRemoveMovieBtn (movie.imdbID)
                         :
-                        `<div class="add-movie" data-id="${movie.imdbID}">
-                        <img class="plus-icon" src="/images/plus-icon.png">
-                        <span>Add to watchlist</span>
-                    </div>`
+                        getAddMovieBtn (movie.imdbID)
                     }   
                 </div>
                 <p class="movie-plot">${movie.Plot}</p>
@@ -107,13 +66,34 @@ function renderList(arr) {
     return htmlString
 }
 
+function getRemoveMovieBtn (filmId) {
+    return `<div class="remove-movie" data-id="${filmId}">
+        <img class="minus-icon" src="/images/minus-icon.png">
+        <span>remove</span>
+        </div>`
+}
+
+function getAddMovieBtn (filmId) {
+    return `<div class="add-movie" data-id="${filmId}">
+        <img class="plus-icon" src="/images/plus-icon.png">
+        <span>Add to watchlist</span>
+        </div>`
+}
+
 if (movieList) {
     movieList.addEventListener("click", (e) => {
         const addMovieBtn = e.target.closest(".add-movie")
         if(addMovieBtn && addMovieBtn.dataset.id) {
             addMyMovie(addMovieBtn.dataset.id)
+            addMovieBtn.outerHTML = getRemoveMovieBtn (addMovieBtn.dataset.id)
         }
-    })
+
+        const removeMovieBtn = e.target.closest(".remove-movie")
+        if (removeMovieBtn && removeMovieBtn.dataset.id) {
+            removeMovie(removeMovieBtn.dataset.id)
+            removeMovieBtn.outerHTML = getAddMovieBtn (removeMovieBtn.dataset.id) 
+        }
+    })       
 }
 
 function addMyMovie(filmId) {
@@ -122,7 +102,6 @@ function addMyMovie(filmId) {
         const movieToAdd = moviesResultsArr.find(movie => movie.imdbID === filmId)
         myMoviesArr.push(movieToAdd)
         localStorage.setItem("My movie list", JSON.stringify(myMoviesArr))
-
     } 
 }
 
@@ -135,4 +114,37 @@ function removeMovie(filmId) {
             localStorage.setItem("My movie list", JSON.stringify(myMoviesArr))
         }
     }
+}
+
+if(myMovieList) {
+    function renderMyMovieList() {
+        if (myMoviesArr.length === 0) {
+            myMoviesHTML = 
+            `<div class="placeholder-div">
+                <p class="placeholder-text">Your watchlist is looking a little empty...</p>
+                <div class="add-movie" id="add-movie">
+                    <img class="plus-icon" src="/images/plus-icon.png">
+                    <a class="empty-list" href="./index.html">Let's add some movies!</a>
+                </div>
+            </div>`
+        } else {
+            myMoviesHTML = `<p class="empty-btn" id="clear-btn">Empty my list</p>` + renderList(myMoviesArr)
+        }
+        myMovieList.innerHTML = myMoviesHTML
+    }
+    renderMyMovieList()
+
+    myMovieList.addEventListener("click", (e) => {
+        if (e.target.closest("#clear-btn")) {
+            localStorage.clear()
+            myMoviesArr = []
+            renderMyMovieList()
+        }
+
+        const removeMovieBtn = e.target.closest(".remove-movie")
+        if (removeMovieBtn && removeMovieBtn.dataset.id) {
+            removeMovie(removeMovieBtn.dataset.id)
+            renderMyMovieList()
+        }
+    })
 }
