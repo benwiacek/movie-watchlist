@@ -20,11 +20,11 @@ async function getMovieList(e) {
     e.preventDefault();
     moviesResultsArr = []
     listResultsHTML = ""
-    const res = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&s=${input.value}&type=movie&r=json`)
+    const res = await fetch(`https://www.omdbapi.com/?apikey=8a8e1701&s=${input.value}&type=movie&r=json`)
     const data = await res.json()
     if(data.Response === "True") {
         for(const result of data.Search) {
-            const movieRes = await fetch(`http://www.omdbapi.com/?apikey=8a8e1701&i=${result.imdbID}&r=json`)
+            const movieRes = await fetch(`https://www.omdbapi.com/?apikey=8a8e1701&i=${result.imdbID}&r=json`)
             const movieData = await movieRes.json()
             moviesResultsArr.push(movieData)
         }
