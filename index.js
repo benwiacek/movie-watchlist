@@ -69,7 +69,7 @@ function renderList(arr) {
 function getRemoveMovieBtn (filmId) {
     return `<div class="remove-movie" data-id="${filmId}">
         <img class="minus-icon" src="/images/minus-icon.png">
-        <span>remove</span>
+        <span>Remove</span>
         </div>`
 }
 

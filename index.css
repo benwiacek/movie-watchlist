@@ -20,7 +20,6 @@ header {
 
 h1, h2 {
     padding: 20px;
-
     text-shadow: 0 0 10px orange;
 }
 
@@ -78,6 +77,29 @@ button {
     font-weight: bold;
     background-color: lightgoldenrodyellow;
     cursor: pointer;
+
+}
+
+@media (min-width: 1024px) {
+
+    body, .search-input, button {
+        font-size: 18px;
+    }
+    h1 {
+        font-size: 65px;
+    }
+
+    h2 { 
+        font-size: 30px;
+    }
+
+    .search-container {
+        max-width: 800px;
+    }
+
+    .search-icon {
+        width: 20px;
+    }
 
 }
 
@@ -156,10 +178,6 @@ main {
     cursor: pointer;
 }
 
-/* .movie-details {
-    display: flex; < == for LARGE screens
-} */
-
 .movie-details p {
     margin: 1px;
 }
@@ -205,6 +223,66 @@ main {
     font-style: italic;
     text-decoration: underline;
     font-weight: bold;
-    color: darkblue;
+    color: red;
     cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+    main {
+        max-width: 1200px;
+    }
+
+    #movie-list {
+        padding: 50px 0;
+    }
+
+    .icon-film {
+        width: 100px;
+    }
+
+    .placeholder-text, .error-text {
+        font-size: 24px;
+    }
+
+    .movie {
+        padding: 30px 0;
+    }
+
+    .poster {
+        min-width: 125px;
+        height: 186px;
+    }
+
+    .movie-headline {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .movie-title {
+        font-size: 26px;
+        padding-right: 15px;
+    }
+
+    .movie-year {
+        padding-right: 40px;
+    }
+
+    .movie-details {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        margin: 5px 0 15px;
+    }
+
+    .runtime, .genre {
+        font-size: 18px;
+    }
+
+    .empty-list {
+        font-size: 20px;
+    }
+
+    .empty-btn {
+        font-size: 20px;
+    }
 }
